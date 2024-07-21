@@ -50,7 +50,7 @@ const roleMap: Record<string, string> = {
   user: 'USER'
 }
 
-const FEATURES = ['system-as-role', 'stream'] as const satisfies Features[]
+const FEATURES: ['system-as-role', 'stream'] = ['system-as-role', 'stream'] as const satisfies Features[]
 type CohereFeatures = typeof FEATURES[number]
 
 /**

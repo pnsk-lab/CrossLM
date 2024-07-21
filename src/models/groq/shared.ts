@@ -57,7 +57,7 @@ export type StreamChunk =
     x_groq: XGroq
   })
 
-const FEATURES = ['system-as-role', 'stream'] as const satisfies Features[]
+const FEATURES: ['system-as-role', 'stream'] = ['system-as-role', 'stream'] as const satisfies Features[]
 type GroqFeatures = typeof FEATURES[number]
 /**
  * Cohere Client Base class

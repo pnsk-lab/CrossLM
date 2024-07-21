@@ -2,8 +2,7 @@
  * Groq Client
  * @module
  */
-import { assertThrows } from '@std/assert'
-import { ModelOptions } from '../../types.ts'
+import type { ModelOptions } from '../../types.ts'
 import { GroqClientBase } from './shared.ts'
 
 export type ModelName = (
