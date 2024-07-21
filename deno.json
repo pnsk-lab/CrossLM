@@ -4,9 +4,9 @@
   "exports": {
     ".": "./src/mod.ts",
 
-    "./cohere/command-r-plus": "./src/models/command-r-plus.ts",
-    "./cohere/command-r": "./src/models/command-r.ts",
-    "./groq": "./src/models/groq.ts"
+    "./cohere/command-r-plus": "./src/models/cohere/command-r-plus.ts",
+    "./cohere/command-r": "./src/models/cohere/command-r.ts",
+    "./groq": "./src/models/groq/groq.ts"
   },
   "tasks": {
     "d": "deno run -A .idea/main.ts"
