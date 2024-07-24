@@ -1,5 +1,10 @@
-import { ModelOptions } from '../../mod.ts'
-import { Features } from '../../types.ts'
+/**
+ * Define Gemini 1.5 Flash
+ * @module
+ */
+
+import type { ModelOptions } from '../../mod.ts'
+import type { Features } from '../../types.ts'
 import { GeminiBase } from './shared.ts'
 
 const FEATURES: ModelFeatures[] = ['stream', 'input-image'] as const satisfies Features[]

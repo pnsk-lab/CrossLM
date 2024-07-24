@@ -1,4 +1,9 @@
 /**
+ * Utils for blob
+ * @module
+ */
+
+/**
  * blob to base64
  */
 export const blobToBase64 = (blob: Blob): Promise<string> => new Promise(resolve => {

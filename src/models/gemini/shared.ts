@@ -1,5 +1,5 @@
 /**
- * Groq client
+ * Gemini client
  * @module
  */
 
