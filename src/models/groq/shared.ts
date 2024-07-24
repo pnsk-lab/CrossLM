@@ -60,7 +60,7 @@ export type StreamChunk =
 const FEATURES: ['system-as-role', 'stream'] = ['system-as-role', 'stream'] as const satisfies Features[]
 type GroqFeatures = typeof FEATURES[number]
 /**
- * Cohere Client Base class
+ * Groq Client Base class
  * @internal
  */
 export abstract class GroqClientBase extends Model<GroqFeatures> {
@@ -92,7 +92,7 @@ export abstract class GroqClientBase extends Model<GroqFeatures> {
     init: GenerateInit<GroqFeatures>,
   ): Promise<GeneratedResponse<GroqFeatures>> {
     const res = await this.#fetch({
-      messages: init.messages.map(msg => ({ role: msg.role, content: msg.text ?? '' })),
+      messages: [...(init.systemPrompt ? [{ role: 'sysytem', content: init.systemPrompt }] : []), ...init.messages.map(msg => ({ role: msg.role, content: msg.parts.map(part => part.text).join('\n') ?? '' }))],
       model: this.#modelName,
     })
 
@@ -109,7 +109,7 @@ export abstract class GroqClientBase extends Model<GroqFeatures> {
     init: GenerateInit<GroqFeatures>,
   ): AsyncGenerator<GeneratingChunk, GeneratedResponse<GroqFeatures>> {
     const res = await this.#fetch({
-      messages: init.messages.map(msg => ({ role: msg.role, content: msg.text ?? '' })),
+      messages: [...(init.systemPrompt ? [{ role: 'sysytem', content: init.systemPrompt }] : []), ...init.messages.map(msg => ({ role: msg.role, content: msg.parts.map(part => part.text).join('\n') ?? '' }))],
       model: this.#modelName,
       stream: true,
     }, {

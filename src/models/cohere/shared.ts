@@ -86,7 +86,7 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
   #convertChatHistory (msgs: GenerateInit<CohereFeatures>['messages']) {
     return msgs.map(msg => ({
       role: roleMap[msg.role],
-      text: msg.text ?? ''
+      text: msg.parts.map(part => part.text).join('\n')
     }))
   }
   async generate(
@@ -94,8 +94,9 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
   ): Promise<GeneratedResponse<CohereFeatures>> {
     const res = await this.#fetch({
       chat_history: this.#convertChatHistory(init.messages.slice(0, -1)),
-      message: init.messages.at(-1)?.text ?? '',
+      message: init.messages.at(-1)?.parts.map(part => part.text).join('\n'),
       model: this.#modelName,
+      preamble: init.systemPrompt
     })
 
     const json: CohereResponse = await res.json()
@@ -112,9 +113,10 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
   ): AsyncGenerator<GeneratingChunk, GeneratedResponse<CohereFeatures>> {
     const res = await this.#fetch({
       chat_history: this.#convertChatHistory(init.messages.slice(0, -1)),
-      message: init.messages.at(-1)?.text ?? '',
+      message: init.messages.at(-1)?.parts.map(part => part.text).join('\n') ?? '',
       model: this.#modelName,
       stream: true,
+      preamble: init.systemPrompt
     }, {
       'Transfer-Encoding': 'chunked',
     })

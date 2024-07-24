@@ -56,6 +56,7 @@ export class CrossLM {
   ): GenerateInit<F> {
     return {
       messages: init.messages,
+      systemPrompt: init.systemPrompt
     }
   }
 
@@ -115,18 +116,19 @@ export class CrossLM {
           }
           throw new TypeError('All model generation failed.')
         })()
-
+      let text = ''
       while (true) {
         const chunk = await stream.next()
         if (chunk.done) {
           const generated: CrossLMGenerated<F | 'stream'> = {
-            text: chunk.value.text,
+            text,
             usedModel: used,
             usage: chunk.value.usage
           }
           resolveEnd(generated)
           return generated
         } else {
+          text += chunk.value.text
           yield chunk.value
         }
       }

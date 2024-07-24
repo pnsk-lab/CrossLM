@@ -5,7 +5,19 @@
 
 import type { Model } from './models/mod.ts'
 
-export type Features = 'image' | 'stream' | 'system-as-role'
+export type Features =
+  /**
+   * Input image
+   */
+  'input-image' |
+  /**
+   * If model has 'stream', you can use streaming response 
+   */
+  'stream' |
+  /**
+   * You can system promot in message
+   */
+  'system-as-role'
 
 /**
  * Generated Object
@@ -17,12 +29,27 @@ export interface GeneratedResponse<F extends Features> {
 }
 
 /**
+ * Stream Generated
+ */
+export interface GeneratedResponseStream<F extends Features>{
+  usage: Usage
+}
+
+/**
+ * Part
+ */
+export type Part<F extends Features> = {
+  text?: string
+} & {
+  image?: 'input-image' extends F ? Blob : never
+}
+
+/**
  * Message
  */
 export interface Message<F extends Features> {
   role: ('system-as-role' extends F ? 'system' : never) | 'user' | 'assistant'
-
-  text?: string
+  parts: Part<F>[]
 }
 
 /**
@@ -31,6 +58,7 @@ export interface Message<F extends Features> {
  */
 export interface GenerateInit<F extends Features> {
   messages: Message<F>[]
+  systemPrompt?: string
 }
 
 /**
@@ -64,6 +92,11 @@ export interface CrossLMGenerateInit<F extends Features> {
    * @default 'fallback'
    */
   mode?: 'fallback' | 'random'
+
+  /**
+   * System Prompt
+   */
+  systemPrompt?: string
 }
 
 /**

@@ -7,7 +7,7 @@
  * const lm = new CrossLM([new CommandRPlus()])
  * 
  * const { end, stream } = lm.generateStream([], {
- *   messages: [{ role: 'system', text: '1+1=?' }]
+ *   messages: [{ role: 'system', parts: [{ text: '1+1=?' }] }]
  * })
  * 
  * for await (const { text } of stream) {
