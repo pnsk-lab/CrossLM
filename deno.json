@@ -14,13 +14,24 @@
     "./gemini/15-pro": "./src/models/gemini/15-pro.ts"
   },
   "tasks": {
-    "d": "deno run -A .idea/main.ts"
+    "d": "deno run -A .idea/main.ts",
+    "build:npm": "deno run -A scripts/npm.ts",
+    "npm": "deno task build:npm && cd npm && npm publish"
   },
   "fmt": {
     "semiColons": false,
     "singleQuote": true
   },
   "imports": {
-    "@std/assert": "jsr:@std/assert@^1.0.0"
+    "@std/assert": "jsr:@std/assert@^1.0.0",
+    "@std/path": "jsr:@std/path@^1.0.1"
+  },
+  "publish": {
+    "exclude": [
+      "./.vscode/**/*",
+      "./**/*.test.ts",
+      "./scripts/**/*",
+      "./npm/**/*"
+    ]
   }
 }
