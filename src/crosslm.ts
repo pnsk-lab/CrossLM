@@ -11,6 +11,7 @@ import type {
   CrossLMStreamReturn,
   Features,
   GenerateInit,
+  Message,
 } from './types.ts'
 import { weightedRandom } from './utils/random.ts'
 
@@ -54,9 +55,13 @@ export class CrossLM {
   #createGenerateInit<F extends Features>(
     init: CrossLMGenerateInit<F>,
   ): GenerateInit<F> {
+    const messages: Message<F>[] = init.messages.map((msg) => ({
+      role: msg.role,
+      parts: 'parts' in msg ? msg.parts : [{ text: msg.text }],
+    }))
     return {
-      messages: init.messages,
-      systemPrompt: init.systemPrompt
+      messages,
+      systemPrompt: init.systemPrompt,
     }
   }
 
@@ -86,7 +91,7 @@ export class CrossLM {
     return {
       usedModel: used,
       text: generated.text,
-      usage: generated.usage
+      usage: generated.usage,
     }
   }
 
@@ -107,7 +112,7 @@ export class CrossLM {
 
     const stream: CrossLMStreaming<F | 'stream'> = (async function* () {
       const [used, stream] = selectedByRandom
-        ? [selectedByRandom, await selectedByRandom.generateStream(init)]
+        ? [selectedByRandom, await selectedByRandom.generateStream(generateInit)]
         : await (async () => {
           for (const model of targetModels) {
             try {
@@ -123,7 +128,7 @@ export class CrossLM {
           const generated: CrossLMGenerated<F | 'stream'> = {
             text,
             usedModel: used,
-            usage: chunk.value.usage
+            usage: chunk.value.usage,
           }
           resolveEnd(generated)
           return generated

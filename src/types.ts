@@ -5,6 +5,12 @@
 
 import type { Model } from './models/mod.ts'
 
+// Shared, Model, Surface
+
+//  ------
+//  SHARED
+//  ------
+
 export type Features =
   /**
    * Input image
@@ -18,6 +24,20 @@ export type Features =
    * You can system promot in message
    */
   'system-as-role'
+
+/**
+ * Usage of LLM result
+ */
+export interface Usage {
+  /**
+   * All input tokens count
+   */
+  inputTokens: number
+  /**
+   * All output tokens count
+   */
+  outputTokens: number
+}
 
 /**
  * Generated Object
@@ -79,14 +99,31 @@ export interface ModelOptions {
   weight?: number
 }
 
+// -------
+// SURFACE
+// -------
+
+/**
+ * CrossLM Message
+ * @public
+ */
+export type CrossLMMessage<F extends Features> = {
+  role: ('system-as-role' extends F ? 'system' : never) | 'user' | 'assistant'
+} & ({
+  text: string
+} | {
+  parts: Part<F>[]
+})
+
 /**
  * CrossLM Generate Init
+ * @public
  */
 export interface CrossLMGenerateInit<F extends Features> {
   /**
    * Messages
    */
-  messages: Message<F>[]
+  messages: CrossLMMessage<F>[]
   /**
    * Model select style
    * @default 'fallback'
@@ -97,14 +134,6 @@ export interface CrossLMGenerateInit<F extends Features> {
    * System Prompt
    */
   systemPrompt?: string
-}
-
-/**
- * LLM Usage
- */
-export interface Usage {
-  inputTokens: number
-  outputTokens: number
 }
 
 /**
