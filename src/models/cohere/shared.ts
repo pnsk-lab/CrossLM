@@ -98,7 +98,8 @@ export abstract class CohereClientBase<F extends Features = CohereFeatures> exte
       model: this.#modelName,
       preamble: init.systemPrompt,
       documents: init.documents,
-      max_tokens: init.tokenLimit?.output
+      max_tokens: init.tokenLimit?.output,
+      temperature: init.temperature
     })
 
     const json: CohereResponse = await res.json()
@@ -120,7 +121,8 @@ export abstract class CohereClientBase<F extends Features = CohereFeatures> exte
       stream: true,
       preamble: init.systemPrompt,
       documents: init.documents,
-      max_tokens: init.tokenLimit?.output
+      max_tokens: init.tokenLimit?.output,
+      temperature: init.temperature
     }, {
       'Transfer-Encoding': 'chunked',
     })

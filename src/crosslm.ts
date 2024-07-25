@@ -63,7 +63,14 @@ export class CrossLM {
       messages,
       systemPrompt: init.systemPrompt,
       documents: init.documents,
-      tokenLimit: init.tokenLimit
+      tokenLimit: init.tokenLimit,
+      temperature: init.temperature
+    }
+  }
+
+  #validateInit <F extends Features>(init: CrossLMGenerateInit<F>) {
+    if (init.temperature && (init.temperature < 0 || init.temperature > 1)) {
+      throw new RangeError('temperature must be between 0.0 and 1.0')
     }
   }
 
@@ -71,6 +78,7 @@ export class CrossLM {
     features: F[],
     init: CrossLMGenerateInit<F>,
   ): Promise<CrossLMGenerated<F>> {
+    this.#validateInit(init)
     const targetModels = this.#getTargetModels(features, false)
 
     const selectedByRandom = init.mode === 'random'
@@ -101,6 +109,8 @@ export class CrossLM {
     features: F[],
     init: CrossLMGenerateInit<F | 'stream'>,
   ): CrossLMStreamReturn<F | 'stream'> {
+    this.#validateInit(init)
+
     const targetModels = this.#getTargetModels(features, true)
     const selectedByRandom = init.mode === 'random'
       ? this.#getRandomModel(targetModels)

@@ -113,7 +113,8 @@ export abstract class GroqClientBase extends Model<GroqFeatures> {
       messages: [...(init.systemPrompt ? [{ role: 'sysytem', content: init.systemPrompt }] : []), ...init.messages.map(msg => ({ role: msg.role, content: msg.parts.map(part => part.text).join('\n') ?? '' }))],
       model: this.#modelName,
       stream: true,
-      max_tokens: init.tokenLimit?.output
+      max_tokens: init.tokenLimit?.output,
+      temperature: init.temperature ? init.temperature * 2 : void 0
     }, {
       'Transfer-Encoding': 'chunked',
     })
