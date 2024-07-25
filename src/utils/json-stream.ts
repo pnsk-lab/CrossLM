@@ -3,6 +3,10 @@
  * @module
  */
 
+/**
+ * Convert JSONL stream to json stream
+ * @param prefix JSON prefix
+ */
 export async function* jsonStream<T>(stream: ReadableStream<Uint8Array>, prefix: string = ''): AsyncGenerator<T, void> {
   const reader = stream.getReader()
 

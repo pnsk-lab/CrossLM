@@ -50,7 +50,7 @@ const roleMap: Record<string, string> = {
   user: 'USER'
 }
 
-const FEATURES: ['system-as-role', 'stream'] = ['system-as-role', 'stream'] as const satisfies Features[]
+const FEATURES: ['system-as-role', 'stream', 'input-document'] = ['system-as-role', 'stream', 'input-document'] as const satisfies Features[]
 type CohereFeatures = typeof FEATURES[number]
 
 /**
@@ -96,7 +96,8 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
       chat_history: this.#convertChatHistory(init.messages.slice(0, -1)),
       message: init.messages.at(-1)?.parts.map(part => part.text).join('\n'),
       model: this.#modelName,
-      preamble: init.systemPrompt
+      preamble: init.systemPrompt,
+      documents: init.documents
     })
 
     const json: CohereResponse = await res.json()
@@ -116,7 +117,8 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
       message: init.messages.at(-1)?.parts.map(part => part.text).join('\n') ?? '',
       model: this.#modelName,
       stream: true,
-      preamble: init.systemPrompt
+      preamble: init.systemPrompt,
+      documents: init.documents
     }, {
       'Transfer-Encoding': 'chunked',
     })

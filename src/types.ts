@@ -11,6 +11,9 @@ import type { Model } from './models/mod.ts'
 //  SHARED
 //  ------
 
+/**
+ * Features
+ */
 export type Features =
   /**
    * Input image
@@ -23,7 +26,19 @@ export type Features =
   /**
    * You can system promot in message
    */
-  'system-as-role'
+  'system-as-role' |
+  /**
+   * You can input documents
+   */
+  'input-document'
+
+/**
+ * Document
+ */
+export interface Document {
+  title: string
+  text: string
+}
 
 /**
  * Usage of LLM result
@@ -79,6 +94,7 @@ export interface Message<F extends Features> {
 export interface GenerateInit<F extends Features> {
   messages: Message<F>[]
   systemPrompt?: string
+  documents?: 'input-document' extends F ? Document : never
 }
 
 /**
@@ -134,6 +150,11 @@ export interface CrossLMGenerateInit<F extends Features> {
    * System Prompt
    */
   systemPrompt?: string
+
+  /**
+   * Document
+   */
+  documents?: 'input-document' extends F ? Document : never
 }
 
 /**

@@ -62,6 +62,7 @@ export class CrossLM {
     return {
       messages,
       systemPrompt: init.systemPrompt,
+      documents: init.documents
     }
   }
 
