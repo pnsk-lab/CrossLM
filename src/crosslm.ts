@@ -63,6 +63,7 @@ export class CrossLM {
       messages,
       systemPrompt: init.systemPrompt,
       documents: init.documents,
+      tokenLimit: init.tokenLimit,
       temperature: init.temperature
     }
   }

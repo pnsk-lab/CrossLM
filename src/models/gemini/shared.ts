@@ -30,6 +30,7 @@ interface GeminiContent {
 interface GeminiBody {
   contents: GeminiContent[]
   system_instruction?: GeminiPart[]
+  max_output_tokens?: number,
   temperature?: number
 }
 
@@ -93,6 +94,7 @@ export abstract class GeminiBase<F extends Exclude<Features, 'system-as-role'>> 
     const res = await this.#fetch({
       contents: await this.#messagesToContents(init.messages),
       system_instruction: init.systemPrompt === void 0 ? [{ text: init.systemPrompt }] : [],
+      max_output_tokens: init.tokenLimit?.output,
       temperature: init.temperature
     }, {}, false)
 
@@ -112,6 +114,7 @@ export abstract class GeminiBase<F extends Exclude<Features, 'system-as-role'>> 
     const res = await this.#fetch({
       contents: await this.#messagesToContents(init.messages),
       system_instruction: init.systemPrompt === void 0 ? [{ text: init.systemPrompt }] : [],
+      max_output_tokens: init.tokenLimit?.output,
       temperature: init.temperature
     }, {
       'Transfer-Encoding': 'chunked',

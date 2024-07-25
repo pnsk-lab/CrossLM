@@ -33,6 +33,13 @@ export type Features =
   'input-document'
 
 /**
+ * Token limits
+ */
+export interface TokenLimit {
+  output?: number
+}
+
+/**
  * Document
  */
 export interface Document {
@@ -95,6 +102,7 @@ export interface GenerateInit<F extends Features> {
   messages: Message<F>[]
   systemPrompt?: string
   documents?: 'input-document' extends F ? Document : never
+  tokenLimit?: TokenLimit
   /**
    * Temperature, must be between 0.0 and 1.0
    */
@@ -161,6 +169,10 @@ export interface CrossLMGenerateInit<F extends Features> {
   documents?: 'input-document' extends F ? Document : never
 
   /**
+   * Token Limit
+   */
+  tokenLimit?: TokenLimit
+  /*
    * Temperature
    */
   temperature?: number
