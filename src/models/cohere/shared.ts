@@ -57,8 +57,8 @@ type CohereFeatures = typeof FEATURES[number]
  * Cohere Client Base class
  * @internal
  */
-export abstract class CohereClientBase extends Model<CohereFeatures> {
-  features = FEATURES
+export abstract class CohereClientBase<F extends Features = CohereFeatures> extends Model<F> {
+  features: F[] = FEATURES as Features[] as F[]
   #modelName: string
   #apiKey: string
   constructor(modelName: string, apiKey: string, options: ModelOptions) {
@@ -83,15 +83,15 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
     }
     return res
   }
-  #convertChatHistory (msgs: GenerateInit<CohereFeatures>['messages']) {
+  #convertChatHistory (msgs: GenerateInit<F>['messages']) {
     return msgs.map(msg => ({
       role: roleMap[msg.role],
       text: msg.parts.map(part => part.text).join('\n')
     }))
   }
   async generate(
-    init: GenerateInit<CohereFeatures>,
-  ): Promise<GeneratedResponse<CohereFeatures>> {
+    init: GenerateInit<F>,
+  ): Promise<GeneratedResponse<F>> {
     const res = await this.#fetch({
       chat_history: this.#convertChatHistory(init.messages.slice(0, -1)),
       message: init.messages.at(-1)?.parts.map(part => part.text).join('\n'),
@@ -110,8 +110,8 @@ export abstract class CohereClientBase extends Model<CohereFeatures> {
     }
   }
   async *generateStream(
-    init: GenerateInit<CohereFeatures>,
-  ): AsyncGenerator<GeneratingChunk, GeneratedResponse<CohereFeatures>> {
+    init: GenerateInit<F>,
+  ): AsyncGenerator<GeneratingChunk, GeneratedResponse<F>> {
     const res = await this.#fetch({
       chat_history: this.#convertChatHistory(init.messages.slice(0, -1)),
       message: init.messages.at(-1)?.parts.map(part => part.text).join('\n') ?? '',
