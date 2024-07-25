@@ -94,6 +94,7 @@ export abstract class GroqClientBase extends Model<GroqFeatures> {
     const res = await this.#fetch({
       messages: [...(init.systemPrompt ? [{ role: 'sysytem', content: init.systemPrompt }] : []), ...init.messages.map(msg => ({ role: msg.role, content: msg.parts.map(part => part.text).join('\n') ?? '' }))],
       model: this.#modelName,
+      max_tokens: init.tokenLimit?.output
     })
 
     const json: GroqResponse = await res.json()
@@ -112,6 +113,7 @@ export abstract class GroqClientBase extends Model<GroqFeatures> {
       messages: [...(init.systemPrompt ? [{ role: 'sysytem', content: init.systemPrompt }] : []), ...init.messages.map(msg => ({ role: msg.role, content: msg.parts.map(part => part.text).join('\n') ?? '' }))],
       model: this.#modelName,
       stream: true,
+      max_tokens: init.tokenLimit?.output
     }, {
       'Transfer-Encoding': 'chunked',
     })
