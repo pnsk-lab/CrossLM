@@ -95,6 +95,10 @@ export interface GenerateInit<F extends Features> {
   messages: Message<F>[]
   systemPrompt?: string
   documents?: 'input-document' extends F ? Document : never
+  /**
+   * Temperature, must be between 0.0 and 1.0
+   */
+  temperature?: number
 }
 
 /**
@@ -155,6 +159,11 @@ export interface CrossLMGenerateInit<F extends Features> {
    * Document
    */
   documents?: 'input-document' extends F ? Document : never
+
+  /**
+   * Temperature
+   */
+  temperature?: number
 }
 
 /**
