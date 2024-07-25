@@ -62,7 +62,8 @@ export class CrossLM {
     return {
       messages,
       systemPrompt: init.systemPrompt,
-      documents: init.documents
+      documents: init.documents,
+      temperature: init.temperature
     }
   }
 
