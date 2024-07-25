@@ -10,9 +10,9 @@ const FEATURES: ['system-as-role', 'stream'] = ['system-as-role', 'stream'] as c
 type CommandFeatures = typeof FEATURES[number]
 
 /**
- * Command R
+ * Command
  */
-export class CommandR extends CohereClientBase<CommandFeatures> {
+export class Command extends CohereClientBase<CommandFeatures> {
   name = 'cohere/command'
   features = FEATURES
   constructor (token: string, options: ModelOptions = {}) {

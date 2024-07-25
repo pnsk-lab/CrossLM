@@ -1,5 +1,5 @@
 /**
- * Define Gemini 1.5 Flash
+ * Define Gemini 1.5 Pro
  * @module
  */
 
@@ -11,9 +11,9 @@ const FEATURES: ModelFeatures[] = ['stream', 'input-image'] as const satisfies F
 type ModelFeatures = ['stream', 'input-image'][number]
 
 /**
- * Gemini 1.5 Flash
+ * Gemini 1.5 Pro
  */
-export class Gemini15Flash extends GeminiBase<ModelFeatures> {
+export class Gemini15Pro extends GeminiBase<ModelFeatures> {
   features = FEATURES
   name = 'gemini/1.5-flash'
   constructor (apiKey: string, options: ModelOptions = {}) {

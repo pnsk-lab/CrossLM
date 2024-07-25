@@ -6,8 +6,12 @@
 
     "./cohere/command-r-plus": "./src/models/cohere/command-r-plus.ts",
     "./cohere/command-r": "./src/models/cohere/command-r.ts",
+    "./cohere/command": "./src/models/cohere/command.ts",
+
     "./groq": "./src/models/groq/groq.ts",
-    "./gemini/15-flash": "./src/models/gemini/15-flash.ts"
+
+    "./gemini/15-flash": "./src/models/gemini/15-flash.ts",
+    "./gemini/15-pro": "./src/models/gemini/15-pro.ts"
   },
   "tasks": {
     "d": "deno run -A .idea/main.ts"
